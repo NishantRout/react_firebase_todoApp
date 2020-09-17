@@ -1,25 +1,34 @@
 import { Button, FormControl, Input, InputLabel } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Todo from './components/Todo';
+import db from './config/firebase';
+import firebase from 'firebase';
 
 function App() {
-  const [todos, setTodos] = useState([
-    'Complete NPTEL Assignment 1',
-    'Computer Networks Project'
-  ]);
+  const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
+
+  useEffect(() => {
+    db.collection('todos').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+      setTodos(snapshot.docs.map((doc) => {
+        return (
+          doc.data().todo
+        )
+      }))
+    })
+  }, []);
 
   const handleInput = (e) => {
     setInput(e.target.value);
   }
   const addTodo = (e) => {
     e.preventDefault();
-    setTodos([
-      ...todos,
-      input
-    ]
-    );
+    db.collection('todos').add({
+      todo: input,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+
     setInput('');
   }
 
