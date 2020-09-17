@@ -24,8 +24,10 @@ function App() {
   return (
     <div className="App">
       <h1>Todo App</h1>
-      <input type="text" value={input} onChange={handleInput} />
-      <button onClick={addTodo}>Add Todo</button>
+      <form>
+        <input type="text" value={input} onChange={handleInput} />
+        <button type="submit" onClick={addTodo}>Add Todo</button>
+      </form>
 
       <ul>
         {todos.map((todo) => {
