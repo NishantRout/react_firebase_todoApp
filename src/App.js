@@ -26,7 +26,6 @@ function App() {
         return ({
           id: doc.id,
           todo: doc.data().todo,
-          timestamp: doc.data().timestamp.toDate()
         })
       }))
     })
